@@ -35,6 +35,9 @@ python3 p1.py
 * [UD Treebank](https://universaldependencies.org): Credited for supplying the data used to train and test the models across various languages.
 
 
+## Introduction
+Part of speech (POS) tagging is a process in computational linguistics where each word in a sentence is assigned a label that indicates its grammatical role, such as noun, verb, adjective etc. These labels are crucial for understanding the syntax and structure of sentences. It is important for tasks such as speech generation, information extraction, parsing and machine translation. The purpose of this assignment was to gain an understanding of the Viterbi algorithm, and its application to POS tagging. The aim was to implement and compare the performance of the Viterbi algorithm with two related algorithms, the Eager and Individually Most Probable Tags. Their performance in three languages, English, Korean and Swedish was compared to derive findings about the languages morphological and syntactic properties.
+
 ## Data Preparation
 Data was collected from the UD Treebanks. It was parsed and split into training and test sets using the conllu python package. Training data was formatted into a 2D list of sentences containing words with associated tags. Each sentence was tagged with a start and end of sentence marker to capture boundary effects in the transition probability estimations. Transmission probabilities were calculated by counting relative frequency of POS bigrams with Witten bell smoothing. Emission probabilities was calculated by counting the relative frequency of a given word associated with a POS. Finally, start of sentence probability was calculated by counting the relative frequency of a given POS at the start of the sentence.
 
