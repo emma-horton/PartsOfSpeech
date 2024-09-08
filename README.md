@@ -1,3 +1,7 @@
+![Python Badge](https://img.shields.io/badge/Python-3776AB?logo=python&logoColor=white&style=flat)
+![NLTK Badge](https://img.shields.io/badge/NLTK-3776AB?logo=nltk&logoColor=white&style=flat)
+![CoNLLU Badge](https://img.shields.io/badge/CoNLLU-3776AB?logo=conllu&logoColor=white&style=flat)
+![Dynamic Programming Badge](https://img.shields.io/badge/Dynamic_Programming-3776AB?logo=dynamicprogramming&logoColor=white&style=flat)
 # Parts of Speech 
 Implemented and compared the Viterbi algorithm with two related algorithms, Eager and Individually Most Probable Tags, to optimize part of speech tagging accuracy. 
 
