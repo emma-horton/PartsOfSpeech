@@ -9,4 +9,21 @@ This project was developed for the “Language and Computation” module at the 
 * Training on corpora in three distinct languages: English, Swedish, and Korean.
 * Evaluation of part-of-speech tagging accuracy for each language using unseen test sets.
 
+## Usage
+#### 1. Install dependancies 
+```bash
+pip install conullu
+npm install nltk
+```
+#### 2. Run script
+```bash
+python3 p1.py
+```
+
+## Technologies Used 
+* **CoNLL-U**: Utilized for parsing and organizing corpora from the UD Treebank into training and testing sets.
+* **NLTK**: Employed to compute emission and transition probabilities essential for training the models.
+
+## Acknowledgements
+* [UD Treebank](https://universaldependencies.org): Credited for supplying the data used to train and test the models across various languages.
   
