@@ -3,8 +3,7 @@
 ![CoNLLU Badge](https://img.shields.io/badge/CoNLLU-3776AB?logo=conllu&logoColor=white&style=flat)
 ![Dynamic Programming Badge](https://img.shields.io/badge/Dynamic_Programming-3776AB?logo=dynamicprogramming&logoColor=white&style=flat)
 # Parts of Speech Tagging with Dynamic Algorithms
-Comparing the accuracy of part-of-speech tagging using the Eager, Viterbi, and Individually Most Probable Tags algorithms across English, Korean, and Swedish. 
-
+Implementing three part-of-speech tagging algorithms—Eager, Viterbi, and Individually Most Probable Tags—and comparing their accuracy across English, Korean, and Swedish.
 ## Purpose 
 This project was developed as an individual assignment as part of the coursework for the “Language and Computation” at the University of St Andrews. The three algoritms were trained using data collected from [Universal Dependancies Treebank](https://universaldependencies.org). Python, along with the CoNLL-U package and NLTK, were used to process the data and train the algorithms.
 
