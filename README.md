@@ -1,20 +1,17 @@
-# Parts of Speech Tagging with Dynamic Algorithms
-
 ![Python Badge](https://img.shields.io/badge/Python-3776AB?logo=python&logoColor=white&style=flat)
 ![NLTK Badge](https://img.shields.io/badge/NLTK-3776AB?logo=nltk&logoColor=white&style=flat)
 ![CoNLLU Badge](https://img.shields.io/badge/CoNLLU-3776AB?logo=conllu&logoColor=white&style=flat)
 ![Dynamic Programming Badge](https://img.shields.io/badge/Dynamic_Programming-3776AB?logo=dynamicprogramming&logoColor=white&style=flat)
-
-## Overview
-This project was developed for the “Language and Computation” module at the University of St Andrews as an individual assignment. The program, written in Python, utilizes data collected from UD Treebanks. The data was processed using the CoNLL-U package, and the model was implemented with the help of NLTK.
+# Parts of Speech Tagging with Dynamic Algorithms
+Comparing the accuracy of part-of-speech tagging using the Eager, Viterbi, and Individually Most Probable Tags algorithms across English, Korean, and Swedish. 
 
 ## Purpose 
-To implement and compare the Viterbi algorithm with the Eager and Individually Most Probable Tags algorithms to optimize part of speech tagging accuracy.
+This project was developed as an individual assignment as part of the coursework for the “Language and Computation” at the University of St Andrews. The three algoritms were trained using data collected from [Universal Dependancies Treebank](https://universaldependencies.org). Python, along with the CoNLL-U package and NLTK, were used to process the data and train the algorithms.
 
-## Features 
-* Implementation of three algorithms with varying complexity: Eager, Viterbi, and Individually Most Probable Tags.
-* Training on corpora in three distinct languages: English, Swedish, and Korean.
-* Evaluation of part-of-speech tagging accuracy for each language using unseen test sets.
+## Aims
+* Develop and implement three algorithms of varying complexity: Eager, Viterbi, and Individually Most Probable Tags.
+* Train the algorithms on corpora from three distinct languages: English, Swedish, and Korean.
+* Evaluate the part-of-speech tagging accuracy for each language using unseen test sets.
 
 ## Usage
 #### 1. Install dependancies 
@@ -32,5 +29,4 @@ python3 p1.py
 * **NLTK**: Employed to compute emission and transition probabilities essential for training the models.
 
 ## Acknowledgements
-* [UD Treebank](https://universaldependencies.org): Credited for supplying the data used to train and test the models across various languages.
-
+* [Universal Dependancies Treebank](https://universaldependencies.org): Provided the multilingual data used for training and testing the models.
