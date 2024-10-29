@@ -29,3 +29,6 @@ python3 p1.py
 
 ## Acknowledgements
 * [Universal Dependancies Treebank](https://universaldependencies.org): Provided the multilingual data used for training and testing the models.
+  
+## Project Grade 
+Grade: 17/20 (85%)
