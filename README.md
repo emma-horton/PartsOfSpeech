@@ -6,6 +6,8 @@
 Implementing three part-of-speech tagging algorithms—Eager, Viterbi, and Individually Most Probable Tags—and comparing their accuracy across English, Korean, and Swedish.
 ## Purpose 
 This project was developed as an individual assignment as part of the coursework for the “Language and Computation” at the University of St Andrews. The three algoritms were trained using data collected from [Universal Dependancies Treebank](https://universaldependencies.org). Python, along with the CoNLL-U package and NLTK, were used to process the data and train the algorithms.
+As an extension of the assignment, an interactive interface was developed to visualise the inner workings of the Viterbi algorithm, which achieved test set accuracies of 91.3% in English, 90.2% in Swedish, and 79.2% in Korean.
+
 
 ## Aims
 * Develop and implement three algorithms of varying complexity: Eager, Viterbi, and Individually Most Probable Tags.
