@@ -4,17 +4,13 @@ from nltk.probability import WittenBellProbDist, FreqDist
 from sys import float_info
 from math import log
 from nltk.util import bigrams
-from langdetect import detect
 import json
 import os
-# Add other necessary imports from your script
 
 app = Flask(__name__)
 
-# Define your POS tagging logic as a function
 def pos_tagger(test_sentence, lang):
-    # Your existing code with minimal modifications goes here
-    # Choose language.
+    
     user_test_sentence = test_sentence
 
     # Create train and test set
@@ -62,9 +58,8 @@ def pos_tagger(test_sentence, lang):
 
 
 
-    # Define your Viterbi algorithm function
+    # Define Viterbi algorithm function
     def viterbi_algorithm(obs, states, start_p, trans_p, emit_p):
-        # Your Viterbi algorithm code here
         V = [{}]
         path = {}
         backpointer = [{}]
@@ -110,10 +105,7 @@ def index():
     if request.method == 'POST':
         test_sentence = request.form.get("sentence")
         lang = request.form.get("language")
-        detected_lang = detect(test_sentence)
-        print(f'detected lang {detected_lang}')
-        if detected_lang == lang:
-            output, vTable, backpointer = pos_tagger(test_sentence, lang)
+        output, vTable, backpointer = pos_tagger(test_sentence, lang)
     return render_template('index.html', output=output, sentence=test_sentence, vTable=vTable, backpointer=backpointer)
 
 
