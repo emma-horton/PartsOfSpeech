@@ -206,15 +206,6 @@
                         .text(d => d.id);
                 }
                 drawVisualization();
-
-                // Add resize event listener to update the layout
-                window.addEventListener('resize', () => {
-                    ({ columnSpacing, xOffset } = calculateSpacing()); // Update spacing and offset
-                    createNodes();
-                    createLinks();
-                    drawVisualization();
-                });
-
                 
                 
             </script>
