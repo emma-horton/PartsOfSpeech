@@ -116,7 +116,7 @@ def index():
             output, vTable, backpointer = pos_tagger(test_sentence, lang)
     return render_template('index.html', output=output, sentence=test_sentence, vTable=vTable, backpointer=backpointer)
 
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
 
-    
+if __name__ == "__main__":
+    # Set debug mode to True when running locally
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5001)), debug=True)
