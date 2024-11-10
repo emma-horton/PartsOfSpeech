@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Part of Speech Tagger</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        .page-title {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 2em;
+        }
+        .search-bar {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .answer {
+            text-align: center;
+        }
+        .node-diagram {
+            display: flex;
+            justify-content: center;  /* Center horizontally */
+            align-items: center;      /* Center vertically */
+            width: 100%;
+            height: 100vh;            /* Full viewport height */
+            overflow: hidden;         /* Prevents overflow */
+        }
+        
+        svg {
+            display: block;           /* Removes default inline spacing */
+            margin: auto;             /* Centers the SVG within the container */
+        }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 8px; text-align: center; border: 1px solid #ddd; }
+        th { background-color: #f2f2f2; }
+        td { font-size: 0.9em; }
+     
+    </style>
+</head>
+
+<body>
+
+    <div class="logo">
+        <h1 class="page-title">Part of Speech Tagger</h1>
+    </div>
+
+    <div class="search-bar">
+        <form method="POST">
+            <input id="sentence" type="text" name="sentence" placeholder="Enter sentence">
+            
+            <select name="language" id="language">
+                <option value="en">English</option>
+                <option value="sv">Swedish</option>
+                <option value="ko">Korean</option>
+            </select>
+            
+            <button type="submit">Tag Now</button>
+        </form>
+    </div>
+    <div class="node-diagram">
+        {% if vTable %}
+            <script>
+                // Safely parse data from Django template
+                const backpointers = JSON.parse(`{{ backpointer | tojson | safe }}`);
+                const outputdata = JSON.parse(`{{ output | tojson | safe }}`);
+                const sentence = JSON.parse(`{{ sentence | tojson | safe }}`);
+    
+                const words = sentence.split(" ");
+                // Select the div and append an SVG element
+                const fixedHeight = 600; // Set a fixed height for the SVG
+                const svg = d3.select(".node-diagram")
+                    .append("svg")
+                    .attr("width", "100%")
+                    .attr("height", fixedHeight)
+                    .attr("viewBox", `0 0 1600 ${fixedHeight}`)
+                    .attr("preserveAspectRatio", "xMidYMid meet");
+
+                // Base dimensions
+                const baseWidth = 1600;
+                const minColumnSpacing = 50; // Minimum spacing to prevent nodes from overlapping
+
+                // Function to calculate `columnSpacing` and `xOffset` dynamically
+                function calculateSpacing() {
+                    const currentWidth = svg.node().getBoundingClientRect().width;
+                    const numColumns = backpointers.length; // Number of dictionaries/columns
+                    const calculatedSpacing = currentWidth / numColumns;
+                    const columnSpacing = Math.max(calculatedSpacing, minColumnSpacing);
+
+                    // Calculate xOffset to center visualization horizontally within SVG
+                    const totalWidth = (numColumns - 1) * columnSpacing;
+                    const xOffset = (currentWidth - totalWidth) / 2;
+
+                    return { columnSpacing, xOffset };
+                }
+
+                // Initialize spacing
+                let { columnSpacing, xOffset } = calculateSpacing();
+
+                // Define color scale for columns
+                const colorScale = d3.scaleOrdinal(d3.schemeCategory10);
+
+                // Convert backpointers to nodes with calculated positions for a table layout
+                let nodes = [];
+                function createNodes() {
+                    nodes = [];
+                    backpointers.forEach((dict, colIndex) => {
+                        const keys = Object.keys(dict);
+                        keys.forEach((key, rowIndex) => {
+                            nodes.push({
+                                id: key,
+                                value: dict[key],
+                                column: colIndex,
+                                x: colIndex * columnSpacing + xOffset, // Adjusted x position with xOffset for centering
+                                y: rowIndex * 30 + 50 // Fixed row height
+                            });
+                        });
+                    });
+                }
+                createNodes();
+
+                // Create links from each key to its target in the previous dictionary
+                let links = [];
+                function createLinks() {
+                    links = [];
+                    backpointers.forEach((dict, colIndex) => {
+                        if (colIndex === 0) return;
+                        const previousDict = backpointers[colIndex - 1];
+                        Object.entries(dict).forEach(([source, target]) => {
+                            if (target && previousDict.hasOwnProperty(target)) {
+                                const sourceNode = nodes.find(node => node.id === source && node.column === colIndex);
+                                const targetNode = nodes.find(node => node.id === target && node.column === colIndex - 1);
+                                if (sourceNode && targetNode) {
+                                    links.push({ source: sourceNode, target: targetNode });
+                                }
+                            }
+                        });
+                    });
+                }
+                createLinks();
+
+                // Identify and highlight the path based on `output`
+                const highlightedLinks = [];
+                for (let i = 1; i < outputdata.length; i++) {
+                    const sourceId = outputdata[i];
+                    const targetId = outputdata[i - 1];
+                    const link = links.find(
+                        d => d.source.id === sourceId && d.source.column === i && d.target.id === targetId && d.target.column === i - 1
+                    );
+                    if (link) {
+                        highlightedLinks.push(link);
+                    }
+                }
+
+                // Function to draw the visualization
+                function drawVisualization() {
+                    svg.selectAll("*").remove(); // Clear existing elements
+
+                    // Add words above each column
+                    svg.append("g")
+                        .selectAll("text")
+                        .data(sentence.split(" "))
+                        .join("text")
+                        .attr("x", (d, i) => i * columnSpacing + xOffset)
+                        .attr("y", 20)
+                        .attr("text-anchor", "middle")
+                        .style("fill", "black")
+                        .style("font-size", "14px")
+                        .style("font-weight", "bold")
+                        .text(d => d);
+
+                    // Draw links with conditional highlighting
+                    svg.append("g")
+                        .selectAll("line")
+                        .data(links)
+                        .join("line")
+                        .attr("stroke", d => highlightedLinks.includes(d) ? "red" : "#999") // Highlight color for matched links
+                        .attr("stroke-opacity", 0.6)
+                        .attr("stroke-width", d => highlightedLinks.includes(d) ? 3 : 1.5) // Thicker line for highlighted links
+                        .attr("x1", d => d.source.x)
+                        .attr("y1", d => d.source.y)
+                        .attr("x2", d => d.target.x)
+                        .attr("y2", d => d.target.y);
+
+                    // Draw nodes
+                    svg.append("g")
+                        .attr("stroke", "#fff")
+                        .attr("stroke-width", 1.5)
+                        .selectAll("circle")
+                        .data(nodes)
+                        .join("circle")
+                        .attr("cx", d => d.x)
+                        .attr("cy", d => d.y)
+                        .attr("r", 10)
+                        .attr("fill", d => colorScale(d.column));
+
+                    // Add labels for nodes next to the circles
+                    svg.selectAll("text.node-label")
+                        .data(nodes)
+                        .join("text")
+                        .attr("class", "node-label")
+                        .attr("x", d => d.x + 15)
+                        .attr("y", d => d.y + 4)
+                        .style("font-size", "10px")
+                        .text(d => d.id);
+                }
+                drawVisualization();
+
+                // Add resize event listener to update the layout
+                window.addEventListener('resize', () => {
+                    ({ columnSpacing, xOffset } = calculateSpacing()); // Update spacing and offset
+                    createNodes();
+                    createLinks();
+                    drawVisualization();
+                });
+
+                
+                
+            </script>
+        {% endif %}
+    </div>
+    
+
+</body>
+
+</html>
+
