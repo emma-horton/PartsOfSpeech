@@ -112,7 +112,6 @@ def eager_algorithm(sentence, emission_probs, transition_probs):
 
 def viterbi_algorithm(obs, states, start_p, trans_p, emit_p):
     V = [{}]  # This corresponds to the Viterbi table viterbi[q, i]
-    path = {}
     backpointer = [{}]  # The backpointer table used for backtracking the best path
 
     # Initialise base cases (t == 0)
@@ -141,10 +140,14 @@ def viterbi_algorithm(obs, states, start_p, trans_p, emit_p):
             # Record the backpointer for the current state st at time t
             backpointer[t][st] = prev_st
 
-    # Identify the final state with the maximum probability
+     # Identify the final state with the maximum probability
     # This corresponds to the termination step of the Viterbi algorithm where we identify the state
     # with the highest probability at the final time step.
-    last_state = max(V[-1], key=V[-1].get)
+    # include transition to </s>
+    (max_final_log_prob, last_state) = max(
+        (V[len(obs)-1][prev_st] + log(trans_p.prob((prev_st, '</s>'))), prev_st)
+        for prev_st in states
+    )
 
     # Backtrack to reconstruct the path
     # Starting from the last state, follow the backpointers to find the most probable path that led to the final state
