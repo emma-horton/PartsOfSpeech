@@ -47,5 +47,3 @@ Grateful for the [Universal Dependencies Treebank](https://universaldependencies
 ## **Want to fin out more?**  
 
 For more insights, read the associated blog post:  
-[**Decoding Language: A Deep Dive into Part-of-Speech Tagging**](https://emmahorton.me/projects/PartsOfSpeechBlog/PartsOfSpeechBlog.html)  
-
